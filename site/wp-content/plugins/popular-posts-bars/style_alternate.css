@@ -1,0 +1,104 @@
+.popular_posts_bars{
+  margin:0.3em 0 !important;
+  padding:0 !important;
+  list-style:none !important;
+}
+.popular_posts_bars_li{
+  overflow: visible !important;
+  position: relative !important;
+  margin: 0 0 -6px 0 !important;
+  padding: 15px 0 15px 5px !important;
+  list-style:none !important;
+  width: 100% !important;
+  border: 0 !important;
+}
+  .popular_posts_bars_li.red{
+    /* Original: #f45 rgba(255, 57, 65, 0.9) */
+    background: #f45 !important;
+    background: rgba(255, 57, 65, 0.9) !important;
+    width: 100% !important;
+  }
+  .popular_posts_bars_li.orange{
+    /* Original: #f74 rgba(255, 103, 57, 0.9) */
+    background: #f74 !important;
+    background: rgba(255, 103, 57, 0.9) !important;
+    width: 95% !important;
+  }
+  .popular_posts_bars_li.yellow{
+    /* Original: #fd4 rgba(255, 218, 57, 0.9) */
+    background: #f4d !important;
+    background: rgba(255, 218, 57, 0.9) !important;
+    width: 89% !important;
+  }
+  .popular_posts_bars_li.green{
+    /* Original: #cf5 rgba(193, 241, 78, 0.9) */
+    background: #cf5 !important;
+    background: rgba(193, 241, 78, 0.9) !important;
+    width: 84% !important;
+  }
+  .popular_posts_bars_li.blue{
+    /* Original: #3cf rgba(29, 195, 246, 0.9) */
+    background: #3cf !important;
+    background: rgba(29, 195, 246, 0.9) !important;
+    width: 80% !important;
+  }
+  .popular_posts_bars_li.no-color{
+    background: #ccc !important;
+    width: 76% !important;
+  }
+a.popular_posts_bars_link{
+  display:block !important;
+  background: none !important;
+  color: #333 !important;
+  text-decoration:none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 30px !important;
+  margin-right: 40px !important;
+}
+  a.popular_posts_bars_link:hover{
+    color: #fff !important;
+  }
+.popular_posts_bars_comment_count_hold{
+  display:block !important;
+  position: absolute !important;
+  width: 40px !important;
+  right: -17px !important;
+  top: 10px !important;
+}
+a.popular_posts_bars_comment_count{
+  width: 40px !important;
+  color: #fff !important;
+  background: #333 !important;
+  text-align: center !important;
+  display: block !important;
+  border: 0 !important;
+  text-decoration: none !important;
+  font-weight: bold !important;
+  padding: 0.5em 0.2em !important;
+}
+.popular_posts_bars_comment_count_triangle{
+  display: block !important;
+  _display: none;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  border-right: 9px solid transparent !important;
+  border-top: 9px solid #333 !important;
+  border-left: 0px solid transparent !important;
+  margin: 0 auto !important;
+  top: 0 !important;
+}
+
+.popular_posts_bars_li img{
+  position: absolute !important;
+  right: 5px !important;
+  margin-top: 15px !important;
+}
+
+.most_viewed_bars.popular_posts_bars .popular_posts_bars_comment_count_hold{
+  width: 70px !important;
+}
+.most_viewed_bars.popular_posts_bars .popular_posts_bars_comment_count{
+  width: 70px !important;
+}

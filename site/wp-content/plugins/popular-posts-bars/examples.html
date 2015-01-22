@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Popular Posts Bar WordPress Widget</title>
+<style>
+body{
+	background: #fff;
+	color: #333;
+	font: 1em/1.5em sans-serif;
+}
+code, pre{
+	background: #fafafa;
+	white-space: pre-wrap;
+}
+#content{
+	width: 70%;
+	margin: 0 auto;
+}
+hr{
+	border-color: #fcc;
+	margin: 1em auto;
+	width: 20%;
+}
+h1, h2{
+	letter-spacing: -0.07em;
+	text-shadow: 1px 2px 0 #fee;
+}
+h1+hr{
+	width: 80%;
+}
+</style>
+</head>
+<body>
+<div id="content">
+<h1>Popular Posts Bar WordPress Widget</h1>
+
+<hr />
+
+<h2>Customize</h2>
+<p>
+	Below are shown some tips to customize your Popular Posts Bar WordPress Widget.
+</p>
+
+<hr />
+
+<h2>Time Lapses</h2>
+<p>
+	By default, the time lapse is <strong>-7 days</strong>, which means it will substract 7 days to the current date. In other words, if today is Tuesday, it will go back all the way to last week's Thursday and it will begin counting posts from there.
+</p>
+<p>
+	To change it, just make sure you're spelling correctly the times. Here are some examples:
+	<ul>
+		<li><code>-1 month</code></li>
+		<li><code>-1 week</code> is an alias for <code>-7 days</code></li>
+		<li><code>-3 days</code></li>
+		<li><code>-24 hours</code> will show the most commented posts in the last 24 hours. Recommended for very popular blogs.</li>
+	</ul>
+</p>
+<p>
+	Let's say you want the most popular posts for this week, so if today is Tuesday, the Plugin will just count the comments made on Sunday, Monday and Tuesday. To achieve this, set the lapse value to <code>last sunday</code><br />
+	Some more examples:
+	<ul>
+		<li><code>this month first day 0:00</code> will take the comments made from this month's 1st.</li>
+		<li><code>today</code> will count the comments made since the first second today.</code></li>
+	</ul>
+	Please note that in this form, that in the period's beginning, there will be no items or very few to be shown in the widget, since it is resetted with each day, week or month.
+</p>
+
+<hr />
+
+<h2>HTML Classes</h2>
+<p>
+	This Plugin generates an unordered list (<code>&lt;ul&gt;</code>) with each list element (<code>&lt;li&gt;</code>) two classes: <code>popular_posts_bars_li</code> and the specified by the user in the HTML Classes field.<br />
+	By default, HTML Classes is <code>red,orange,yellow,green,blue</code> so the generated code will look much like:
+<pre>
+&lt;li class="popular_posts_bars_li <strong>red</strong>"&gt; ...
+&lt;li class="popular_posts_bars_li <strong>orange</strong>"&gt; ...
+&lt;li class="popular_posts_bars_li <strong>yellow</strong>"&gt; ...
+&lt;li class="popular_posts_bars_li <strong>green</strong>"&gt; ...
+&lt;li class="popular_posts_bars_li <strong>blue</strong>"&gt; ...
+</pre>
+	This values must be comma-separated, so they can be accessed with CSS this way:
+<pre>
+.popular_posts_bar_li.red{
+	...
+}
+</pre>
+	If there are more posts than classes, the class <code>no-color</code> will be added to this element.
+</p>
+
+<hr />
+
+<h2>Adding Colors</h2>
+<p>
+	In order to add new colors, first you'll have to set the number of posts in the widget control panel to something like 7. Then, the HTML Classes field to <code>red,orange,yellow,green,blue,lightblue,lightgray</code> for example.
+</p>
+<p>
+	Now you'll have to create two new classes. Open <code>popularpostbars.css</code> and add this lines:
+<pre>
+.popular_posts_bar_li.lightblue{
+}
+.popular_posts_bar_li.lightgray{
+}
+</pre>
+	These new classes requires a fixed width and it should be less than the previous' (in this case <code>blue</code>, which has a 80% width).
+<pre>
+.popular_posts_bars_li.lightblue{
+	width: 75%;
+}
+.popular_posts_bars_li.lightgray{
+	width: 71%;
+}
+</pre>
+	Open up your favorite image editor, create a 1x1 image, choose a light blue color and set its alpha to 90%, save it as png as <code>lightblue.png</code> in the same Plugin folder. Do the same with the light gray one and link it to your CSS:
+<pre>
+.popular_posts_bars_li.lightblue{
+	width: 75%;
+	background: url('lightblue.png');
+}
+.popular_posts_bars_li.lightgray{
+	width: 71%;
+	background: url('lightgray.png');
+}
+</pre>
+	And that's it.
+</p>
+
+<hr />
+
+<h2>Manual Embedding</h2>
+<p>
+	You can embed manually this plugin with the following code:
+<pre>
+&lt;?php echo popular_posts_bars_widget('title=Your Title&amp;lapse=-1 day&amp;classes=red,orange,yellow,green,blue&amp;number_posts=5&amp;thumbnail=1&amp;thumbnail_size=15x15'); ?&gt;
+</pre>
+</p>
+
+<hr />
+
+<h2>Thank you</h2>
+<p>
+	For purchasing and using this premuim WP Plugin. If you have any comments, feature requests or you found a bug, please <a href="http://www.therror.com/contacto">contact me</a>.
+</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+[02-Feb-2013 23:19:19 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/posts_widget.php on line 2
+[02-Feb-2013 23:19:29 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/homepage_2col_widget.php on line 2
+[02-Feb-2013 23:19:39 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/flickr-widget.php on line 2
+[02-Feb-2013 23:19:50 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/social_counter_widget.php on line 2
+[02-Feb-2013 23:20:21 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/latest_reviews.php on line 2
+[02-Feb-2013 23:21:07 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/social_counter_widget.php on line 2
+[02-Feb-2013 23:21:40 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/tabs_widget.php on line 2
+[02-Feb-2013 23:21:49 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/facebook-like-widget.php on line 2
+[02-Feb-2013 23:22:03 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/homepage_1col_widget.php on line 2
+[02-Feb-2013 23:22:17 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/tweets-widget.php on line 2
+[02-Feb-2013 23:22:31 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/widgets/homepage_media_widget.php on line 2

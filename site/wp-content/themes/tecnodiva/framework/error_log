@@ -1,0 +1,4 @@
+[02-Feb-2013 23:09:17 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/profile.php on line 2
+[02-Feb-2013 23:09:48 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/metaboxes.php on line 7
+[02-Feb-2013 23:10:54 America/Mexico_City] PHP Fatal error:  Call to undefined function add_action() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/metaboxes.php on line 7
+[02-Feb-2013 23:12:13 America/Mexico_City] PHP Fatal error:  Call to undefined function bloginfo() in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/style_switcher.php on line 46

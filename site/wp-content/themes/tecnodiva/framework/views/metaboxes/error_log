@@ -1,0 +1,2 @@
+[02-Feb-2013 23:12:41 America/Mexico_City] PHP Fatal error:  Using $this when not in object context in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/views/metaboxes/post_options.php on line 3
+[02-Feb-2013 23:16:07 America/Mexico_City] PHP Fatal error:  Using $this when not in object context in /home/sakura/public_html/wp-content/themes/tecnodiva/framework/views/metaboxes/review_info.php on line 3
