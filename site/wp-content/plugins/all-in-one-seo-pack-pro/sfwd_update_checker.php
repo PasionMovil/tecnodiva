@@ -67,9 +67,10 @@ class SFWD_Update_Checker extends PluginUpdateChecker {
 				. ' <a href="' . $this->renewal_page . '" target="_blank">' . __( 'Purchase one now', 'all_in_one_seo_pack' ) . '</a>';
 		else
 			if ( $this->has_update() )
-				$msg = "<p>" . sprintf( __( "There is a new version of %s available. Go to <a href='%s'>the plugins page</a> for details.", 'all_in_one_seo_pack' ), AIOSEOP_PLUGIN_NAME, network_admin_url( 'plugins.php' ) ) . "</p>";
-		if ( !empty( $msg ) )
-			echo "<div id='aioseop-warning' class='updated fade'>" . $msg . "</div>";
+				$msg = sprintf( __( "There is a new version of %s available. Go to <a href='%s'>the plugins page</a> for details.", 'all_in_one_seo_pack' ), AIOSEOP_PLUGIN_NAME, network_admin_url( 'plugins.php' ) );
+		if ( !empty( $msg ) ) {
+			aioseop_output_dismissable_notice( $msg, 'aioseop-warning' );			
+		}
 	}
 
 	/**

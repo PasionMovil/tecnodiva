@@ -3,34 +3,35 @@ switch($role)
 {
 	case "administrator":
 		$user_role_permission = "manage_options";
-		break;
+	break;
 	case "editor":
 		$user_role_permission = "publish_pages";
-		break;
+	break;
 	case "author":
 		$user_role_permission = "publish_posts";
-		break;
+	break;
 }
-
 if (!current_user_can($user_role_permission))
 {
 	return;
 }
 else
 {
-	class save_data
+	if(!class_exists("save_data"))
 	{
-		function insert_data($email_setup)
+		class save_data
 		{
-			global $wpdb;
-			$wpdb->insert(wp_mail_bank(), $email_setup);
-			die();
-		}
-		function update_email_data($update_email_data,$where)
-		{
-			global $wpdb;
-			$wpdb->update(wp_mail_bank(),$update_email_data, $where);
-			die();
+			function insert_data($tbl, $data)
+			{
+				global $wpdb;
+				$wpdb->insert($tbl,$data);
+			}
+			
+			function update_data($tbl,$data,$where)
+			{
+				global $wpdb;
+				$wpdb->update($tbl,$data,$where);
+			}
 		}
 	}
 	if(isset($_REQUEST["param"]))
@@ -40,7 +41,7 @@ else
 			{
 				$insert = new save_data();
 				$email_setup = array();
-				$email_setup["from_name"] = esc_attr($_REQUEST["ux_email_from_name"]);
+				$email_setup["from_name"] = htmlspecialchars_decode(esc_attr($_REQUEST["from_name"]));
 				$email_setup["from_email"] = esc_attr($_REQUEST["ux_email_from_email"]);
 				$email_setup["mailer_type"] = intval($_REQUEST["ux_rdl_ends"]);
 				$email_setup["return_path"] = isset($_REQUEST["ux_chk_return_path"]) ? intval($_REQUEST["ux_chk_return_path"]) : 0;
@@ -60,13 +61,13 @@ else
 				);
 				if($count_direction == 0)
 				{
-					$insert->insert_data($email_setup);
+					$insert->insert_data(wp_mail_bank(),$email_setup);
 				}
 				else 
 				{
 					$where = array();
 					$where["id"] = 1;
-					$insert->update_email_data($email_setup,$where);
+					$insert->update_data(wp_mail_bank(),$email_setup,$where);
 				}
 				die();
 				
@@ -97,6 +98,15 @@ else
 					echo $result;
 				}
 				die();
+			}
+			elseif($_REQUEST["param"] == "mail_bank_plugin_updates")
+			{
+				if(wp_verify_nonce( $_REQUEST["_wpnonce"], "update_plugin_nonce"))
+				{
+					$plugin_update = esc_attr($_REQUEST["mail_bank_updates"]);
+					update_option("mail-bank-automatic-update",$plugin_update);
+					die();
+				}
 			}
 		}
 	}

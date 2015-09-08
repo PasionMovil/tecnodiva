@@ -1,11 +1,11 @@
-﻿=== WP Mail Bank - PHPMailer & SMTP Mailer ===
+﻿=== WP Mail Bank - Best PHPMailer & SMTP Mailer ===
 Contributors: contact-banker, Gallery-Bank
-Tags: admin, ajax, email, gmail, mail, mail smtp, mailer, outgoing mail, phpmailer, plugin, Post, posts, privacy, security, sendmail, smtp, ssl, tls, wordpress smtp, wp smtp, wp-phpmailer, wp_mail, wp mail
+Tags: admin, ajax, email, gmail, mail, mail smtp, mailer, outgoing mail, phpmailer, plugin, Post, posts, privacy, security, sendmail, smtp, ssl, tls, wordpress smtp, wp smtp, wp-phpmailer, wp_mail, wp mail, mailer
 Requires at least: 2.7
-Tested up to: 3.9.2
-Stable tag: 1.1
+Tested up to: 4.3
+Stable tag: 1.27
 
-WP Mail Bank reconfigures the PHPMailer and make it more enhanced with advanced smtp settings options.
+WP Mail Bank reconfigures the PHP Mailer and make it more enhanced with advanced SMTP settings options.
 
 == Description ==
 
@@ -15,9 +15,7 @@ This plugin reconfigures the wp_mail() function nd make it more enhanced to use 
 
 The Plugin has options to choose between your custom smtp server or the inbuilt phpmailer.
 
-###IMPORTANT: If you think you found a bug in WP Mail Bank or have any problem or question concerning WP Mail Bank, do not hesitate to contact us at [support@tech-banker.com](mailto:support@tech-banker.com).  
-
-***August 23, 2014: We're happy to announce that WP Mail Bank reached 2400+ plugin downloads in only 3 weeks. We frequently receive positive feedback from people using our WP Mail Bank Plugin for WordPress. Thanks so much for your support!***
+###IMPORTANT: If you think you found a bug in WP Mail Bank or have any problem or question concerning WP Mail Bank, do not hesitate to contact us at [support@tech-banker.com](mailto:support@tech-banker.com). 
 
 ###Key Features :
 
@@ -221,7 +219,122 @@ If any problem occurs, please contact us at [support@tech-banker.com](mailto:sup
 2. Settings Page with SMTP as Transporder for sending Emails from your WordPress Site
 3. Send Test Email Screen
 4. Debugging Output Console Log
+
 == Changelog ==
+
+= 1.0.27 =
+
+* Few Urgent Bugs Fixed
+
+= 1.0.26 =
+
+* Compatibility with 4.3
+
+= 1.0.25 =
+
+* Few Urgent Bugs Fixed
+
+= 1.0.24 =
+
+* Compatibility with 4.2.3
+
+= 1.0.23 =
+
+* Few Bugs Fixed
+
+= 1.0.22 =
+
+* Few Urgent Bugs Fixed
+
+= 1.21 =
+
+* Few Bugs Fixed
+
+= 1.20 =
+
+* Few Bugs Fixed
+* Removed Unwanted Js Files
+
+= 1.19 =
+
+* Auto Updation Bug Fixed. (Will not update from next release, if updates are off.)
+
+= 1.18 =
+
+* Minor Bugs Fixed.
+
+= 1.17 =
+
+* Added Compatibility with WordPress 4.2.2
+
+= 1.16 =
+
+* Added Compatibility with WordPress 4.2.1
+
+= 1.15 =
+
+* Added Compatibility with WordPress 4.2
+
+= 1.14 =
+
+* Added Compatibility with WordPress 4.1.2
+
+= 1.13 =
+
+* Minor Bugs Fixed.
+
+= 1.12 =
+
+* Formatting Issue Fixed.
+
+= 1.11 =
+
+* Minor Bugs Fixed.
+* Other Services Section Updated.
+* Premium Editions Section Updated.
+
+= 1.10 =
+
+* Added new feature of Feature Request.
+
+= 1.9 =
+
+* Implemented New Feature - Automatic Mail Bank Plugin Update Enable/Disable.
+* Bug Fix From From name Field.
+
+= 1.8 =
+
+* Bug Fixed in WP Mail Bank
+
+= 1.7 =
+
+* Recommendation Section Changed
+
+= 1.6 =
+
+* Pricing Change.
+
+= 1.5 =
+
+* CSS Issue Fixed.
+* Added Compatibility with 4.1 WordPress
+
+= 1.4 =
+
+* Added Update Message for New Version 
+
+= 1.3 =
+
+* Multisite Compatibility Added.
+* Added Compatibility with 4.0.1 WordPress
+* Recommended Section Added
+* Other Services Section Added
+
+= 1.2 =
+
+* Light Weight CSS Framework
+* Fixed Bugs with PHP Version Prior to 5.3
+* Added System Status
 
 = 1.1 =
 
