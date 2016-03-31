@@ -124,19 +124,21 @@ abstract class AS3CF_Upgrade {
 		}
 
 		// If the upgrade status is already set, then we've already initialized the upgrade
-		if ( $this->get_upgrade_status() ) {
+		if ( $upgrade_status = $this->get_upgrade_status() ) {
+			if ( self::STATUS_RUNNING === $upgrade_status ) {
+				// Make sure cron job is persisted in case it has dropped
+				$this->schedule();
+			}
 			return false;
 		}
 
 		// Have we completed the upgrade?
-		if ( $this->as3cf->get_setting( $this->settings_key, 0 ) >= $this->upgrade_id ) {
+		if ( $this->get_saved_upgrade_id() >= $this->upgrade_id ) {
 			return false;
 		}
 
 		// Has the previous upgrade completed yet?
-		$previous_id = $this->upgrade_id - 1;
-		if ( 0 !== $previous_id && (int) $this->as3cf->get_setting( $this->settings_key, 0 ) < $previous_id ) {
-			// Previous still running, abort
+		if ( ! $this->has_previous_upgrade_completed() ) {
 			return false;
 		}
 
@@ -177,7 +179,7 @@ abstract class AS3CF_Upgrade {
 		// Initialize the upgrade
 		$this->save_session( array( 'status' => self::STATUS_RUNNING ) );
 
-		$this->as3cf->schedule_event( $this->cron_hook, $this->cron_schedule_key );
+		$this->schedule();
 	}
 
 	/**
@@ -185,8 +187,8 @@ abstract class AS3CF_Upgrade {
 	 */
 	function do_upgrade() {
 		// Check if the cron should even be running
-		if ( $this->as3cf->get_setting( $this->settings_key, 0 ) >= $this->upgrade_id || $this->get_upgrade_status() !== self::STATUS_RUNNING ) {
-			$this->as3cf->clear_scheduled_event( $this->cron_hook );
+		if ( $this->get_saved_upgrade_id() >= $this->upgrade_id || $this->get_upgrade_status() !== self::STATUS_RUNNING ) {
+			$this->unschedule();
 
 			return;
 		}
@@ -254,12 +256,14 @@ abstract class AS3CF_Upgrade {
 
 				if ( time() >= $finish || $this->as3cf->memory_exceeded( 'as3cf_update_' . $this->upgrade_name . '_memory_exceeded' ) ) {
 					// Batch limits reached
+					$this->as3cf->restore_current_blog();
+
 					break 2;
 				}
 			}
-		}
 
-		$this->as3cf->restore_current_blog( $blog_id );
+			$this->as3cf->restore_current_blog();
+		}
 
 		$session['processed_blog_ids'] = $processed_blog_ids;
 		$session['error_count']        = $this->error_count;
@@ -276,17 +280,17 @@ abstract class AS3CF_Upgrade {
 
 		switch ( $this->get_upgrade_status() ) {
 			case self::STATUS_RUNNING:
-				$msg         = sprintf( __( '<strong>Running %s Update</strong> &mdash; We&#8217;re going through all the Media Library items uploaded to S3 %s This will be done quietly in the background, processing a small batch of Media Library items every %d minutes. There should be no noticeable impact on your server&#8217;s performance.', 'as3cf' ), ucfirst( $this->upgrade_type ), $this->running_update_text, $this->cron_interval_in_minutes );
-				$action_text = __( 'Pause Update', 'as3cf' );
+				$msg         = sprintf( __( '<strong>Running %s Update</strong> &mdash; We&#8217;re going through all the Media Library items uploaded to S3 %s This will be done quietly in the background, processing a small batch of Media Library items every %d minutes. There should be no noticeable impact on your server&#8217;s performance.', 'amazon-s3-and-cloudfront' ), ucfirst( $this->upgrade_type ), $this->running_update_text, $this->cron_interval_in_minutes );
+				$action_text = __( 'Pause Update', 'amazon-s3-and-cloudfront' );
 				$action_url  = $this->as3cf->get_plugin_page_url( array( 'action' => 'pause_update', 'update' => $this->upgrade_name ), 'self' );
 				break;
 			case self::STATUS_PAUSED:
-				$msg         = sprintf( __( '<strong>%s Update Paused</strong> &mdash; Updating Media Library %s has been paused.', 'as3cf' ), ucfirst( $this->upgrade_type ), $this->upgrade_type );
-				$action_text = __( 'Restart Update', 'as3cf' );
+				$msg         = sprintf( __( '<strong>%s Update Paused</strong> &mdash; Updating Media Library %s has been paused.', 'amazon-s3-and-cloudfront' ), ucfirst( $this->upgrade_type ), $this->upgrade_type );
+				$action_text = __( 'Restart Update', 'amazon-s3-and-cloudfront' );
 				break;
 			case self::STATUS_ERROR:
-				$msg         = sprintf( __( '<strong>Error Updating %s</strong> &mdash; We ran into some errors attempting to update the %s for all your Media Library items that have been uploaded to S3. Please check your error log for details.', 'as3cf' ), ucfirst( $this->upgrade_type ), $this->upgrade_type );
-				$action_text = __( 'Try Run It Again', 'as3cf' );
+				$msg         = sprintf( __( '<strong>Error Updating %s</strong> &mdash; We ran into some errors attempting to update the %s for all your Media Library items that have been uploaded to S3. Please check your error log for details. (#%d)', 'amazon-s3-and-cloudfront' ), ucfirst( $this->upgrade_type ), $this->upgrade_type, $this->upgrade_id );
+				$action_text = __( 'Try Run It Again', 'amazon-s3-and-cloudfront' );
 				$msg_type    = 'error';
 				break;
 			default:
@@ -307,7 +311,15 @@ abstract class AS3CF_Upgrade {
 	 * Handler for the running upgrade actions
 	 */
 	function maybe_handle_action() {
-		if ( ! isset( $_GET['page'] ) || sanitize_key( $_GET['page'] ) !== $this->as3cf->get_plugin_slug() || ! isset( $_GET['action'] ) ) { // input var okay
+		if ( ! isset( $_GET['page'] ) || sanitize_key( $_GET['page'] ) !== $this->as3cf->get_plugin_slug() ) { // input var okay
+			return;
+		}
+
+		if ( ! isset( $_GET['action'] ) ) {
+			return;
+		}
+
+		if ( ! isset( $_GET['update'] ) || sanitize_key( $_GET['update'] ) !== $this->upgrade_name ) { // input var okay
 			return;
 		}
 
@@ -325,7 +337,7 @@ abstract class AS3CF_Upgrade {
 	function upgrade_error( $session ) {
 		$session['status'] = self::STATUS_ERROR;
 		$this->save_session( $session );
-		$this->as3cf->clear_scheduled_event( $this->cron_hook );
+		$this->unschedule();
 	}
 
 	/**
@@ -333,20 +345,15 @@ abstract class AS3CF_Upgrade {
 	 */
 	function upgrade_finished() {
 		$this->clear_session();
-		$this->as3cf->set_setting( $this->settings_key, $this->upgrade_id );
-		$this->as3cf->save_settings();
-		$this->as3cf->clear_scheduled_event( $this->cron_hook );
+		$this->update_saved_upgrade_id();
+		$this->unschedule();
 	}
 
 	/**
 	 * Restart upgrade
 	 */
 	function action_restart_update() {
-		if ( ! isset( $_GET['update'] ) || $this->upgrade_name !== sanitize_key( $_GET['update'] ) ) {
-			return;
-		}
-
-		$this->as3cf->schedule_event( $this->cron_hook, $this->cron_schedule_key );
+		$this->schedule();
 		$this->change_status_request( self::STATUS_RUNNING );
 	}
 
@@ -354,11 +361,7 @@ abstract class AS3CF_Upgrade {
 	 * Pause upgrade
 	 */
 	function action_pause_update() {
-		if ( ! isset( $_GET['update'] ) || $this->upgrade_name !== sanitize_key( $_GET['update'] ) ) {
-			return;
-		}
-
-		$this->as3cf->clear_scheduled_event( $this->cron_hook );
+		$this->unschedule();
 		$this->change_status_request( self::STATUS_PAUSED );
 	}
 
@@ -378,6 +381,20 @@ abstract class AS3CF_Upgrade {
 	}
 
 	/**
+	 * Schedule the cron
+	 */
+	function schedule() {
+		$this->as3cf->schedule_event( $this->cron_hook, $this->cron_schedule_key );
+	}
+
+	/**
+	 * Remove the cron schedule
+	 */
+	function unschedule() {
+		$this->as3cf->clear_scheduled_event( $this->cron_hook );
+	}
+
+	/**
 	 * Add custom cron interval schedules
 	 *
 	 * @param array $schedules
@@ -388,7 +405,7 @@ abstract class AS3CF_Upgrade {
 		// Add the upgrade interval to the existing schedules.
 		$schedules[ $this->cron_schedule_key ] = array(
 			'interval' => $this->cron_interval_in_minutes * 60,
-			'display'  => sprintf( __( 'Every %d Minutes', 'as3cf' ), $this->cron_interval_in_minutes ),
+			'display'  => sprintf( __( 'Every %d Minutes', 'amazon-s3-and-cloudfront' ), $this->cron_interval_in_minutes ),
 		);
 
 		return $schedules;
@@ -432,5 +449,38 @@ abstract class AS3CF_Upgrade {
 	 */
 	function clear_session() {
 		delete_site_option( 'update_' . $this->upgrade_name . '_session' );
+	}
+
+	/**
+	 * Get the saved upgrade ID
+	 *
+	 * @return int|mixed|string|WP_Error
+	 */
+	function get_saved_upgrade_id() {
+		return $this->as3cf->get_setting( $this->settings_key, 0 );
+	}
+
+	/**
+	 * Update the saved upgrade ID
+	 */
+	function update_saved_upgrade_id() {
+		$this->as3cf->set_setting( $this->settings_key, $this->upgrade_id );
+		$this->as3cf->save_settings();
+	}
+
+	/**
+	 * Has previous upgrade completed
+	 *
+	 * @return bool
+	 */
+	function has_previous_upgrade_completed() {
+		// Has the previous upgrade completed yet?
+		$previous_id = $this->upgrade_id - 1;
+		if ( 0 !== $previous_id && (int) $this->get_saved_upgrade_id() < $previous_id ) {
+			// Previous still running, abort
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -35,7 +35,7 @@ class AS3CF_Upgrade_Meta_WP_Error extends AS3CF_Upgrade {
 		$this->upgrade_name = 'meta_error';
 		$this->upgrade_type = 'attachments';
 
-		$this->running_update_text = __( 'and rebuilding the metadata for attachments that may have been corrupted.', 'as3cf' );
+		$this->running_update_text = __( 'and rebuilding the metadata for attachments that may have been corrupted.', 'amazon-s3-and-cloudfront' );
 
 		parent::__construct( $as3cf );
 	}
@@ -50,7 +50,7 @@ class AS3CF_Upgrade_Meta_WP_Error extends AS3CF_Upgrade {
 	function upgrade_attachment( $attachment ) {
 		$s3object = unserialize( $attachment->s3object );
 		if ( false === $s3object ) {
-			error_log( 'Failed to unserialize S3 meta for attachment ' . $attachment->ID . ': ' . $attachment->s3object );
+			AS3CF_Error::log( 'Failed to unserialize S3 meta for attachment ' . $attachment->ID . ': ' . $attachment->s3object );
 			$this->error_count++;
 
 			return false;
@@ -69,7 +69,7 @@ class AS3CF_Upgrade_Meta_WP_Error extends AS3CF_Upgrade {
 				);
 				$this->as3cf->get_s3client( $s3object['region'], true )->getObject( $args );
 			} catch ( Exception $e ) {
-				error_log( sprintf( __( 'There was an error attempting to download the file %s from S3: %s', 'as3cf' ), $s3object['key'], $e->getMessage() ) );
+				AS3CF_Error::log( sprintf( __( 'There was an error attempting to download the file %s from S3: %s', 'amazon-s3-and-cloudfront' ), $s3object['key'], $e->getMessage() ) );
 
 				return false;
 			}
